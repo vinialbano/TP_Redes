@@ -17,13 +17,37 @@ import java.util.HashSet;
  */
 public class Main {
     
+    int descartes (int totalIp, int qntIp){
+        int des;
+        des = (totalIp - qntIp)/totalIp;
+        return des;
+    };
+    
+    int descartesSalto (int qntIp){
+        int deSalto;
+        deSalto = (3 - qntIp)/3;
+        return deSalto;
+    };
+    
+    int atrasoMedio (double ping, int qntPing){
+        double media;
+        media = ping/qntPing;
+        return media;
+    };
+    
+    void maiorMenor (){
+        
+    };
+    
     public static void main(String[] args) {
         try {
-            HashSet<Trace> traceRoutes = Leitor.getTraceRoutes("C:/Users/Vinicius/Dropbox/Java/Redes/teste.txt");
+            HashSet<Trace> traceRoutes;
+            traceRoutes = Leitor.getTraceRoutes("C:\\Users\\nicol_000\\Documents\\BCC\\Redes\\Trab Fin\teste.txt");
             System.out.println("Fim da leitura");
         } catch (IOException ex) {
             System.out.println("Não foi possível carregar o arquivo");
         }
+        
     }
     
 }
