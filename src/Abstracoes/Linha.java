@@ -1,3 +1,5 @@
+package Abstracoes;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -13,20 +15,11 @@ public class Linha {
     private Pacote p1, p2, p3;
     private int descartes;
 
-    public Linha(Pacote p1, Pacote p2, Pacote p3) {
+    public Linha() {
         descartes = 0;
-        this.p1 = p1;
-        if (p1.getIP() == "*") {
-            descartes++;
-        }
-        this.p2 = p2;
-        if (p2.getIP() == "*") {
-            descartes++;
-        }
-        this.p3 = p3;
-        if (p3.getIP() == "*") {
-            descartes++;
-        }
+        p1 = null;
+        p2 = null;
+        p3 = null;
     }
 
     /**
@@ -55,6 +48,36 @@ public class Linha {
      */
     public int getDescartes() {
         return descartes;
+    }
+
+    /**
+     * @param p1 the p1 to set
+     */
+    public void setP1(Pacote p1) {
+        this.p1 = p1;
+        if (p1.getIP().compareTo("*")==0) {
+            descartes++;
+        }
+    }
+
+    /**
+     * @param p2 the p2 to set
+     */
+    public void setP2(Pacote p2) {
+        this.p2 = p2;
+        if (p1.getIP().compareTo("*")==0) {
+            descartes++;
+        }
+    }
+
+    /**
+     * @param p3 the p3 to set
+     */
+    public void setP3(Pacote p3) {
+        this.p3 = p3;
+        if (p1.getIP().compareTo("*")==0){
+            descartes++;
+        }
     }
 
 }

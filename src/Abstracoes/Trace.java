@@ -1,3 +1,5 @@
+package Abstracoes;
+
 
 import java.util.ArrayList;
 
@@ -25,6 +27,10 @@ public class Trace {
     
     public int getQtLinhas(){
         return linhas.size();
+    }
+    
+    public ArrayList<Linha> getLinhas(){
+        return linhas;
     }
     
 }
