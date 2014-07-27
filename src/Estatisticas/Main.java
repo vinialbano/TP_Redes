@@ -17,19 +17,19 @@ import java.util.HashSet;
  */
 public class Main {
     
-    int descartes (int totalIp, int qntIp){
+    double descartes (int totalIp, int qntIp){
         int des;
-        des = (totalIp - qntIp)/totalIp;
+        des = ((totalIp - qntIp)/totalIp)*100;
         return des;
     };
     
-    int descartesSalto (int qntIp){
+    double descartesSalto (int qntIp){
         int deSalto;
-        deSalto = (3 - qntIp)/3;
+        deSalto = ((3 - qntIp)/3)*100;
         return deSalto;
     };
     
-    int atrasoMedio (double ping, int qntPing){
+    double atrasoMedio (double ping, int qntPing){
         double media;
         media = ping/qntPing;
         return media;
