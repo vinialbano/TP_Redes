@@ -12,11 +12,17 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.Font.FontFamily;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -26,6 +32,7 @@ public class GeradorPDF {
 
     public static void main(String[] args) throws Exception {
 // criação do documento
+        DecimalFormat df = new DecimalFormat("#,##0.00");
         Document doc = null;
         OutputStream os = null;
 
@@ -46,10 +53,11 @@ public class GeradorPDF {
             Font f2 = new Font(FontFamily.COURIER, 14, Font.NORMAL);
             Font f3 = new Font(FontFamily.COURIER, 12, Font.BOLD);
             Font f4 = new Font(FontFamily.COURIER, 12, Font.NORMAL);
-             Font f5 = new Font(FontFamily.COURIER, 14, Font.BOLD);
+            Font f5 = new Font(FontFamily.COURIER, 14, Font.BOLD);
 
             Paragraph p = new Paragraph("UNIVERSIDADE FEDERAL DE ALFENAS", f);
             Paragraph p2;
+            Paragraph p3;
             p.setAlignment(Element.ALIGN_CENTER);
             p.setSpacingAfter(40);
             doc.add(p);
@@ -90,13 +98,176 @@ public class GeradorPDF {
             p2.setAlignment(Element.ALIGN_JUSTIFIED);
             doc.add(p);
             doc.add(p2);
-            
+
             doc.newPage();
-            
+
             p = new Paragraph("Resultados", f5);
             p.setAlignment(Element.ALIGN_CENTER);
+            p.setSpacingAfter(20);
             doc.add(p);
 
+            p = new Paragraph("Servidor DNS Level3 - 209.244.0.3", f2);
+            p.setAlignment(Element.ALIGN_CENTER);
+            p.setSpacingAfter(20);
+            p2 = new Paragraph("Dados Globais", f3);
+            p2.setAlignment(Element.ALIGN_LEFT);
+            p2.setSpacingAfter(10);
+            doc.add(p);
+            doc.add(p2);
+
+            Dados dados = new Dados("C:/Users/Vinicius/Dropbox/Java/Redes/saida1.txt");
+
+            p = new Paragraph("Número de IPs distintos: " + dados.getNumIPsDistintos()
+                    + "\nNúmero de operações TraceRoute: " + dados.getNumTraces()
+                    + "\nNúmero de pacotes enviados: " + dados.getTotalSaltos() * 3
+                    + "\nNúmero de pacotes descartados: " + dados.getTotalDescartes()
+                    + "\nPorcentagem de pacotes descartados: " + df.format(dados.porcentagemDescartes(dados.getTotalDescartes(), dados.getTotalSaltos() * 3))
+                    + "%\nMaior atraso: " + df.format(dados.getMaiorPingTotal()) + " ms"
+                    + "\nMenor atraso: " + df.format(dados.getMenorPingTotal()) + " ms"
+                    + "\nMédia de atraso: " + df.format(dados.mediaAtraso(dados.getPings())) + " ms"
+                    + "\nMaior quantidade de saltos: " + dados.getMaisSaltos()
+                    + "\nMenor quantidade de saltos: " + dados.getMenosSaltos(), f4
+            );
+            p.setSpacingAfter(10);
+            doc.add(p);
+
+            p2 = new Paragraph("");
+            p2.setFont(f4);
+            p2.add("IP\t\tNúmero de saltos");
+            for (String IP : dados.getIPs()) {
+                int i = dados.qtdSaltoIPgeral(IP);
+                if (i > 1) {
+                    p2.add("\n(" + IP + ")\t\t" + i);
+                }
+            }
+            p2.setSpacingAfter(20);
+            doc.add(p2);
+            doc.newPage();
+
+            p = new Paragraph("Servidor DNS University Of Tokyo - 157.82.0.1", f2);
+            p.setAlignment(Element.ALIGN_CENTER);
+            p.setSpacingAfter(20);
+            p2 = new Paragraph("Dados Globais", f3);
+            p2.setAlignment(Element.ALIGN_LEFT);
+            p2.setSpacingAfter(10);
+            doc.add(p);
+            doc.add(p2);
+
+            dados = new Dados("C:/Users/Vinicius/Dropbox/Java/Redes/saida2.txt");
+
+            p = new Paragraph("Número de IPs distintos: " + dados.getNumIPsDistintos()
+                    + "\nNúmero de operações TraceRoute: " + dados.getNumTraces()
+                    + "\nNúmero de pacotes enviados: " + dados.getTotalSaltos() * 3
+                    + "\nNúmero de pacotes descartados: " + dados.getTotalDescartes()
+                    + "\nPorcentagem de pacotes descartados: " + df.format(dados.porcentagemDescartes(dados.getTotalDescartes(), dados.getTotalSaltos() * 3))
+                    + "%\nMaior atraso: " + df.format(dados.getMaiorPingTotal()) + " ms"
+                    + "\nMenor atraso: " + df.format(dados.getMenorPingTotal()) + " ms"
+                    + "\nMédia de atraso: " + df.format(dados.mediaAtraso(dados.getPings())) + " ms"
+                    + "\nMaior quantidade de saltos: " + dados.getMaisSaltos()
+                    + "\nMenor quantidade de saltos: " + dados.getMenosSaltos(), f4
+            );
+            p.setSpacingAfter(10);
+            doc.add(p);
+
+            p2 = new Paragraph("");
+            p2.setFont(f4);
+            p2.add("IP\t\tNúmero de saltos");
+            for (String IP : dados.getIPs()) {
+                int i = dados.qtdSaltoIPgeral(IP);
+                if (i > 1) {
+                    p2.add("\n(" + IP + ")\t\t" + i);
+                }
+            }
+            p2.setSpacingAfter(20);
+            doc.add(p2);
+            doc.newPage();
+            
+            p = new Paragraph("Servidor DNS FDN - 80.67.169.40", f2);
+            p.setAlignment(Element.ALIGN_CENTER);
+            p.setSpacingAfter(20);
+            p2 = new Paragraph("Dados Globais", f3);
+            p2.setAlignment(Element.ALIGN_LEFT);
+            p2.setSpacingAfter(10);
+            doc.add(p);
+            doc.add(p2);
+
+            dados = new Dados("C:/Users/Vinicius/Dropbox/Java/Redes/saida3.txt");
+
+            p = new Paragraph("Número de IPs distintos: " + dados.getNumIPsDistintos()
+                    + "\nNúmero de operações TraceRoute: " + dados.getNumTraces()
+                    + "\nNúmero de pacotes enviados: " + dados.getTotalSaltos() * 3
+                    + "\nNúmero de pacotes descartados: " + dados.getTotalDescartes()
+                    + "\nPorcentagem de pacotes descartados: " + df.format(dados.porcentagemDescartes(dados.getTotalDescartes(), dados.getTotalSaltos() * 3))
+                    + "%\nMaior atraso: " + df.format(dados.getMaiorPingTotal()) + " ms"
+                    + "\nMenor atraso: " + df.format(dados.getMenorPingTotal()) + " ms"
+                    + "\nMédia de atraso: " + df.format(dados.mediaAtraso(dados.getPings())) + " ms"
+                    + "\nMaior quantidade de saltos: " + dados.getMaisSaltos()
+                    + "\nMenor quantidade de saltos: " + dados.getMenosSaltos(), f4
+            );
+            p.setSpacingAfter(10);
+            doc.add(p);
+
+            p2 = new Paragraph("");
+            p2.setFont(f4);
+            p2.add("IP\t\tNúmero de saltos");
+            for (String IP : dados.getIPs()) {
+                int i = dados.qtdSaltoIPgeral(IP);
+                if (i > 1) {
+                    p2.add("\n(" + IP + ")\t\t" + i);
+                }
+            }
+            p2.setSpacingAfter(10);
+            doc.add(p2);
+
+            /*p = new Paragraph("Dados Locais", f3);
+             p.setAlignment(Element.ALIGN_LEFT);
+             p.setSpacingAfter(10);
+             doc.add(p);
+
+             p2 = new Paragraph("");
+             p2.setFont(f4);
+             p2.add("Pacotes descartados\tTrace");
+             ArrayList<Integer> array = dados.getDescartesPorTrace();
+             for (int i = 0; i < array.size(); i++) {
+             p2.add("\n" + array.get(i) + "\t" + Integer.toString(i + 1));
+             }
+             p2.add("\n\nTrace\t% Pacotes descartados");
+             for (int i = 0; i < array.size(); i++) {
+             p2.add("\n" + Integer.toString(i + 1) + "\t" + df.format(dados.porcentagemDescartes(array.get(i), dados.getSaltosPorTrace().get(i) * 3)) + "%");
+             }
+             p2.add("\nTrace\tAtraso médio");
+             for (int i = 0; i < dados.getNumTraces(); i++) {
+             p2.add("\n" + Integer.toString(i + 1) + "\t" + df.format(dados.mediaAtraso(dados.getPingTrace(i))) + " ms");
+             }
+             p2.add("\nTrace\tMaior atraso");
+             ArrayList<Double> array2 = dados.getMaiorPingPorTrace();
+             for (int i = 0; i < array2.size(); i++) {
+             p2.add("\n" + i + "\t" + df.format(array2.get(i)) + " ms");
+             }
+             p2.add("\nTrace\tMenor atraso");
+             array2 = dados.getMenorPingPorTrace();
+             for (int i = 0; i < array2.size(); i++) {
+             p2.add("\n" + i + "\t" + df.format(array2.get(i)) + " ms");
+             }
+             p2.add("\nIP\tSalto\tPorcentagem");
+             for (int i = 0; i < 30; i++) {
+             HashMap<String, Double> map = dados.porcentagemIPSalto(i);
+             for (Map.Entry<String, Double> entry : map.entrySet()) {
+             p2.add("\n" + entry.getKey() + "\t" + i + "\t" + df.format(entry.getValue()) + "%");
+             }
+             }
+             p2.add("\nIP\tSaltos\tTrace");
+             for (String IP : dados.getIPs()) {
+             array = dados.qtdSaltoIP(IP);
+             for (int i = 0; i < array.size(); i++) {
+             if (array.get(i) > 1) {
+             p2.add("\n" + IP + "\t" + array.get(i) + "\t" + i);
+             }
+             }
+             }
+             p2.setAlignment(Element.ALIGN_JUSTIFIED);
+             p2.setSpacingAfter(10);
+             doc.add(p2);*/
         } finally {
             if (doc != null) {
                 //fechamento do documento
