@@ -35,8 +35,48 @@ public class Main {
         return media;
     };
     
-    void maiorMenor (){
-        
+    double[] estatisticaPing (double ping [], int tam){
+        double aux;
+        double mn[] = new double [3];
+        mn[0] = 0;
+        mn[1] = 0;
+        mn[2] = 0;
+        for (int i=0; i<tam; i++){
+            aux = ping[i];
+            if (aux < mn[0]){ //mn[0] (menor ping)
+                mn[0] = aux;
+            }
+            if (aux > mn[1]){ //mn[1] (maior ping)
+                mn[1] = aux;
+            }
+            mn[3] = mn[3] + ping[i];
+        }
+        mn[3] = mn[3]/tam; //mn[3] (media ping)
+        return mn;
+    };
+    
+    int[] maioresSaltos (int saltos[], int tam){
+       
+    };
+    
+    int[] estatisticaSalto (int ultimoSalto[], int tam){ //ultimoSalto recebe um vetor só com os ultimosSaltos pra comparar
+        int aux, maior = 0, menor = 0, med = 0;
+        int estatistica[] = new int [3];
+        for (int i=0; i<tam; i++){
+            aux = ultimoSalto[i];
+            if (aux > maior){
+                maior = aux;
+            }
+            if (aux < menor){
+                menor = aux;
+            }
+            med = med + ultimoSalto[i];
+        }
+        med = med/tam;
+        estatistica[0] = menor; //menor salto
+        estatistica[1] = maior; //maior salto
+        estatistica[2] = med;   //media saltos
+        return estatistica;
     };
     
     public static void main(String[] args) {
