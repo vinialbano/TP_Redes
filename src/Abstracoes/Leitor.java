@@ -38,7 +38,7 @@ public class Leitor {
         BufferedReader buffRead = new BufferedReader(new FileReader(path));
         String linha;
         traceRoutes = new ArrayList<Trace>();
-      
+        trace=null;
         while (true) {
             linha = buffRead.readLine();
             if (linha != null) {

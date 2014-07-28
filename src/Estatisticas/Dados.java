@@ -248,10 +248,12 @@ public class Dados {
 
     public int qtdSaltoIPgeral(String IP) {
         int qtd = 0;
+        HashSet<Linha> linhasPassou = new HashSet<Linha>();
         for (Trace trace : traceRoutes) {
             for (Linha linha : trace.getLinhas()) {
-                if (IP.compareTo(linha.getP1().getIP()) == 0 || IP.compareTo(linha.getP2().getIP()) == 0 || IP.compareTo(linha.getP3().getIP()) == 0) {
+                if (!linhasPassou.contains(linha) && (IP.compareTo(linha.getP1().getIP()) == 0 || IP.compareTo(linha.getP2().getIP()) == 0 || IP.compareTo(linha.getP3().getIP()) == 0)) {
                     qtd++;
+                    linhasPassou.add(linha);
                 }
             }
         }
