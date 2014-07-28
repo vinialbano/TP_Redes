@@ -43,22 +43,24 @@ public class GeradorPDF {
             doc.open();
             //adiciona o texto ao PDF
             Font f = new Font(FontFamily.COURIER, 20, Font.BOLD);
-            Font f2 = new Font(FontFamily.COURIER, 16, Font.NORMAL);
+            Font f2 = new Font(FontFamily.COURIER, 14, Font.NORMAL);
             Font f3 = new Font(FontFamily.COURIER, 12, Font.BOLD);
             Font f4 = new Font(FontFamily.COURIER, 12, Font.NORMAL);
+             Font f5 = new Font(FontFamily.COURIER, 14, Font.BOLD);
 
             Paragraph p = new Paragraph("UNIVERSIDADE FEDERAL DE ALFENAS", f);
             Paragraph p2;
             p.setAlignment(Element.ALIGN_CENTER);
-            p.setSpacingAfter(20);
+            p.setSpacingAfter(40);
             doc.add(p);
 
             p = new Paragraph("Redes de Computadores\nProfessor Flávio Barbieri Gonzaga\nTrabalho Prático", f2);
             p.setAlignment(Element.ALIGN_CENTER);
-            p.setSpacingAfter(40);
+            p.setSpacingAfter(30);
             doc.add(p);
 
-            p = new Paragraph("Alunos:\nNicolas Salgado Sena - 2012.1.08.029\nVinícius Vieira Albano - 2012.1.08.036", f4);
+            p = new Paragraph("Nicolas Salgado Sena - 2012.1.08.029\nVinícius Vieira Albano - 2012.1.08.036", f4);
+            p.setAlignment(Element.ALIGN_CENTER);
             p.setSpacingAfter(30);
             doc.add(p);
 
@@ -68,11 +70,32 @@ public class GeradorPDF {
                     + "O primeiro é da Level3 e seu IP é 209.244.0.3\n"
                     + "O segundo é da University Of Tokyo e seu IP é 157.82.0.1\n"
                     + "O terceiro é da FDN e seu IP é 80.67.169.40", f4);
+            p2.setSpacingAfter(20);
 
             p.setAlignment(Element.ALIGN_CENTER);
             p2.setAlignment(Element.ALIGN_JUSTIFIED);
             doc.add(p);
             doc.add(p2);
+
+            p = new Paragraph("Metodologia", f3);
+            p.setSpacingAfter(10);
+            p2 = new Paragraph("Para obtermos os dados necessários, deixamos rodando um script no servidor Turing por 24 horas"
+                    + " consecutivas. Após isso, utilizamos de expressões regulares para classificar e manipular os dados obtidos. Basicamente"
+                    + " foram utilizadas três expressões regulares:\n•^\\s?\\d+\\s{2}\nPara detectar o início das linhas válidas do TraceRoute"
+                    + " e o número de saltos.\n•^\\S+\\s\\(((?:\\d{1,3}\\.){3}\\d{1,3})\\)\\s*|(\\*)\\s*\nPara detectar o endereço DNS do servidor, assim"
+                    + " como o endereço IP, ou os asteriscos que indicam perda de pacote.\n•^(\\d+\\.\\d+)\\sms\nPara detectar os atrasos dos pacotes.\n"
+                    + "Para a geração das estatísticas e recuperação dos dados, foi utilizada a linguagem de programação JAVA.", f4);
+            p2.setSpacingAfter(20);
+            p.setAlignment(Element.ALIGN_CENTER);
+            p2.setAlignment(Element.ALIGN_JUSTIFIED);
+            doc.add(p);
+            doc.add(p2);
+            
+            doc.newPage();
+            
+            p = new Paragraph("Resultados", f5);
+            p.setAlignment(Element.ALIGN_CENTER);
+            doc.add(p);
 
         } finally {
             if (doc != null) {
