@@ -13,6 +13,7 @@ package Abstracoes;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,7 +25,7 @@ public class Leitor {
     private final static String inicioLinha = "^\\s?(\\d+)\\s{2}";
     private final static String nomeIP = "^\\S+\\s\\(((?:\\d{1,3}\\.){3}\\d{1,3})\\)\\s*|(\\*)\\s*";
     private final static String ping = "^(\\d+\\.\\d+)\\sms\\s*";
-    private static HashSet<Trace> traceRoutes;
+    private static ArrayList<Trace> traceRoutes;
     private static Linha linhaTrace;
     private static Trace trace = null;
     private static Pacote pacote;
@@ -36,7 +37,7 @@ public class Leitor {
     private static void ler(String path) throws IOException {
         BufferedReader buffRead = new BufferedReader(new FileReader(path));
         String linha;
-        traceRoutes = new HashSet<Trace>();
+        traceRoutes = new ArrayList<Trace>();
       
         while (true) {
             linha = buffRead.readLine();
@@ -103,7 +104,7 @@ public class Leitor {
         buffRead.close();
     }
     
-    public static HashSet<Trace> getTraceRoutes(String path) throws IOException{
+    public static ArrayList<Trace> getTraceRoutes(String path) throws IOException{
         ler(path);
         return traceRoutes;
     }

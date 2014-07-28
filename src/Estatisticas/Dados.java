@@ -22,7 +22,7 @@ import java.util.Map.Entry;
  */
 public class Dados {
 
-    private HashSet<Trace> traceRoutes;
+    private ArrayList<Trace> traceRoutes;
     private HashSet<String> IPs;
     private int totalSaltos, totalDescartes;
     private ArrayList<Integer> saltos, descartes;
@@ -62,6 +62,10 @@ public class Dados {
 
     public HashSet<String> getIPs() {
         return IPs;
+    }
+
+    public int getNumTraces() {
+        return traceRoutes.size();
     }
 
     public int getNumIPsDistintos() {
@@ -112,6 +116,26 @@ public class Dados {
         return pings.get(pings.size() - 1);
     }
 
+    public ArrayList<Double> getPings() {
+        return pings;
+    }
+
+    public ArrayList<Double> getPingTrace(int numTrace) {
+        ArrayList<Double> pings = new ArrayList<Double>();
+        for (Linha linha : traceRoutes.get(numTrace).getLinhas()) {
+            if (linha.getP1().getIP().compareTo("*") != 0) {
+                pings.add(linha.getP1().getPing());
+            }
+            if (linha.getP2().getIP().compareTo("*") != 0) {
+                pings.add(linha.getP2().getPing());
+            }
+            if (linha.getP3().getIP().compareTo("*") != 0) {
+                pings.add(linha.getP3().getPing());
+            }
+        }
+        return pings;
+    }
+
     public ArrayList<Double> getMaiorPingPorTrace() {
         ArrayList<Double> pings = new ArrayList<Double>();
         ArrayList<Double> pings2;
@@ -136,7 +160,7 @@ public class Dados {
 
     public double porcentagemDescartes(int numDescartes, int numPacotes) {
         double porc;
-        porc = 100* ((double) numDescartes / numPacotes);
+        porc = 100 * ((double) numDescartes / numPacotes);
         return porc;
     }
 
@@ -173,47 +197,47 @@ public class Dados {
         }
         return linhas;
     }
-    
-    public HashSet<String> getIPs(ArrayList<Linha> linhas){
-        IPs = new HashSet<String>();
+
+    public HashSet<String> getIPs(ArrayList<Linha> linhas) {
+        HashSet<String> ips = new HashSet<String>();
         for (Linha linha : linhas) {
-            IPs.add(linha.getP1().getIP());
-            IPs.add(linha.getP2().getIP());
-            IPs.add(linha.getP3().getIP());
+            ips.add(linha.getP1().getIP());
+            ips.add(linha.getP2().getIP());
+            ips.add(linha.getP3().getIP());
         }
-        IPs.remove("*");
-        return IPs;
+        ips.remove("*");
+        return ips;
     }
-    
-    public HashMap<String,Double> porcentagemIPSalto(int numeroSalto){
-        ArrayList<Linha> linhas = getLinha(numeroSalto-1);
-        HashSet<String> IPs = getIPs(linhas);
-        HashMap<String,Double> IPsSalto = new HashMap<String,Double>();
-        for (String ip : IPs){
-            int soma=0;
-            for (Linha linha: linhas){
-                if (linha.getP1().getIP() == ip){
+
+    public HashMap<String, Double> porcentagemIPSalto(int numeroSalto) {
+        ArrayList<Linha> linhas = getLinha(numeroSalto);
+        HashSet<String> ips = getIPs(linhas);
+        HashMap<String, Double> IPsSalto = new HashMap<String, Double>();
+        for (String ip : ips) {
+            int soma = 0;
+            for (Linha linha : linhas) {
+                if (linha.getP1().getIP().compareTo(ip) == 0) {
                     soma++;
                 }
-                if (linha.getP2().getIP() == ip){
+                if (linha.getP2().getIP().compareTo(ip) == 0) {
                     soma++;
                 }
-                if (linha.getP3().getIP() == ip){
+                if (linha.getP3().getIP().compareTo(ip) == 0) {
                     soma++;
                 }
             }
-            double porc = soma/(3*linhas.size());
+            double porc = 100 * (double) soma / (3 * linhas.size());
             IPsSalto.put(ip, porc);
         }
         return IPsSalto;
     }
-    
-    public ArrayList<Integer> qtdSaltoIP(String IP){   
+
+    public ArrayList<Integer> qtdSaltoIP(String IP) {
         ArrayList<Integer> qtdSalto = new ArrayList<Integer>();
-        for (Trace trace: traceRoutes){
-             int qtd = 0;
-            for (Linha linha: trace.getLinhas()){
-                if (IP == linha.getP1().getIP() || IP == linha.getP2().getIP() || IP == linha.getP3().getIP()){
+        for (Trace trace : traceRoutes) {
+            int qtd = 0;
+            for (Linha linha : trace.getLinhas()) {
+                if (IP.compareTo(linha.getP1().getIP()) == 0 || IP.compareTo(linha.getP2().getIP()) == 0 || IP.compareTo(linha.getP3().getIP()) == 0) {
                     qtd++;
                 }
             }
@@ -221,7 +245,17 @@ public class Dados {
         }
         return qtdSalto;
     }
-    
-    
+
+    public int qtdSaltoIPgeral(String IP) {
+        int qtd = 0;
+        for (Trace trace : traceRoutes) {
+            for (Linha linha : trace.getLinhas()) {
+                if (IP.compareTo(linha.getP1().getIP()) == 0 || IP.compareTo(linha.getP2().getIP()) == 0 || IP.compareTo(linha.getP3().getIP()) == 0) {
+                    qtd++;
+                }
+            }
+        }
+        return qtd;
+    }
 
 }
