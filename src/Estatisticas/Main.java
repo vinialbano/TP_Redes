@@ -41,8 +41,10 @@ public class Main {
     
     public static void main(String[] args) {
         try {
-            HashSet<Trace> traceRoutes;
-            traceRoutes = Leitor.getTraceRoutes("C:\\Users\\nicol_000\\Documents\\BCC\\Redes\\Trab Fin\teste.txt");
+            Dados dados = new Dados("C:/Users/Vinicius/Dropbox/Java/Redes/teste.txt");
+            for (String ip : dados.getIPs()){
+                System.out.println(ip);
+            }
             System.out.println("Fim da leitura");
         } catch (IOException ex) {
             System.out.println("Não foi possível carregar o arquivo");
