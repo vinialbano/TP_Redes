@@ -56,7 +56,7 @@ public class Main {
     };
     
     int[] maioresSaltos (int saltos[], int tam){
-       
+       return null;
     };
     
     int[] estatisticaSalto (int ultimoSalto[], int tam){ //ultimoSalto recebe um vetor só com os ultimosSaltos pra comparar
