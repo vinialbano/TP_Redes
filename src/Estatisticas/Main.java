@@ -22,7 +22,7 @@ public class Main {
         DecimalFormat df = new DecimalFormat("#,##0.00");
 
         try { //Relatório 1
-            Dados dados = new Dados("C:/Users/Vinicius/Dropbox/Java/Redes/teste.txt");
+            Dados dados = new Dados("C:\\Users\\nicol_000\\Documents\\BCC\\Redes\\Trab Fin\\teste.txt");
             System.out.println("Foram descartados " + dados.getTotalDescartes() + " pacotes no total");
             System.out.println("Porcentagem de Descartes no Total: " + df.format(dados.porcentagemDescartes(dados.getTotalDescartes(), dados.getTotalSaltos() * 3)) + "%");
             ArrayList<Integer> array = dados.getDescartesPorTrace();
