@@ -6,10 +6,8 @@
 
 package Estatisticas;
 
-import Abstracoes.Leitor;
-import Abstracoes.Trace;
 import java.io.IOException;
-import java.util.HashSet;
+
 
 /**
  *
