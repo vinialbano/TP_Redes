@@ -65,7 +65,7 @@ public class Linha {
      */
     public void setP2(Pacote p2) {
         this.p2 = p2;
-        if (p1.getIP().compareTo("*")==0) {
+        if (p2.getIP().compareTo("*")==0) {
             descartes++;
         }
     }
@@ -75,7 +75,7 @@ public class Linha {
      */
     public void setP3(Pacote p3) {
         this.p3 = p3;
-        if (p1.getIP().compareTo("*")==0){
+        if (p3.getIP().compareTo("*")==0){
             descartes++;
         }
     }

@@ -6,12 +6,15 @@
 package Estatisticas;
 
 import Abstracoes.Leitor;
+import Abstracoes.Linha;
 import Abstracoes.Trace;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map.Entry;
 
 /**
  *
@@ -24,9 +27,9 @@ public class Dados {
     private int totalSaltos, totalDescartes;
     private ArrayList<Integer> saltos, descartes;
     private ArrayList<Double> pings;
-    private Comparator<Double> comp = new Comparator<Double>() {
+    private Comparator<Number> comp = new Comparator<Number>() {
         @Override
-        public int compare(Double o1, Double o2) {
+        public int compare(Number o1, Number o2) {
             if (o1.doubleValue() < o2.doubleValue()) {
                 return -1;
             } else if (o1.doubleValue() == o2.doubleValue()) {
@@ -73,6 +76,16 @@ public class Dados {
         return saltos;
     }
 
+    public int getMenosSaltos() {
+        Collections.sort(saltos, comp);
+        return saltos.get(0);
+    }
+
+    public int getMaisSaltos() {
+        Collections.sort(saltos, comp);
+        return saltos.get(saltos.size() - 1);
+    }
+
     public int getTotalDescartes() {
         return totalDescartes;
     }
@@ -105,11 +118,11 @@ public class Dados {
         for (Trace trace : traceRoutes) {
             pings2 = trace.getPings();
             Collections.sort(pings2, comp);
-            pings.add(pings2.get(pings2.size()-1));
+            pings.add(pings2.get(pings2.size() - 1));
         }
         return pings;
     }
-    
+
     public ArrayList<Double> getMenorPingPorTrace() {
         ArrayList<Double> pings = new ArrayList<Double>();
         ArrayList<Double> pings2;
@@ -120,5 +133,95 @@ public class Dados {
         }
         return pings;
     }
+
+    public double porcentagemDescartes(int numDescartes, int numPacotes) {
+        double porc;
+        porc = 100* ((double) numDescartes / numPacotes);
+        return porc;
+    }
+
+    public double porcentagemDescartesSalto(int numDescartes) {
+        double porc;
+        porc = (numDescartes / 3) * 100;
+        return porc;
+    }
+
+    public double mediaAtraso(ArrayList<Double> pings) {
+        double media, soma = 0;
+        for (Double d : pings) {
+            soma += d.doubleValue();
+        }
+        media = soma / pings.size();
+        return media;
+    }
+
+    public double mediaSaltos(ArrayList<Integer> saltos) {
+        double media, soma = 0;
+        for (Integer i : saltos) {
+            soma += i.intValue();
+        }
+        media = soma / saltos.size();
+        return media;
+    }
+
+    public ArrayList<Linha> getLinha(int numeroLinha) {
+        ArrayList<Linha> linhas = new ArrayList<Linha>();
+        for (Trace trace : traceRoutes) {
+            if (numeroLinha < trace.getLinhas().size()) {
+                linhas.add(trace.getLinhas().get(numeroLinha));
+            }
+        }
+        return linhas;
+    }
+    
+    public HashSet<String> getIPs(ArrayList<Linha> linhas){
+        IPs = new HashSet<String>();
+        for (Linha linha : linhas) {
+            IPs.add(linha.getP1().getIP());
+            IPs.add(linha.getP2().getIP());
+            IPs.add(linha.getP3().getIP());
+        }
+        IPs.remove("*");
+        return IPs;
+    }
+    
+    public HashMap<String,Double> porcentagemIPSalto(int numeroSalto){
+        ArrayList<Linha> linhas = getLinha(numeroSalto-1);
+        HashSet<String> IPs = getIPs(linhas);
+        HashMap<String,Double> IPsSalto = new HashMap<String,Double>();
+        for (String ip : IPs){
+            int soma=0;
+            for (Linha linha: linhas){
+                if (linha.getP1().getIP() == ip){
+                    soma++;
+                }
+                if (linha.getP2().getIP() == ip){
+                    soma++;
+                }
+                if (linha.getP3().getIP() == ip){
+                    soma++;
+                }
+            }
+            double porc = soma/(3*linhas.size());
+            IPsSalto.put(ip, porc);
+        }
+        return IPsSalto;
+    }
+    
+    public ArrayList<Integer> qtdSaltoIP(String IP){   
+        ArrayList<Integer> qtdSalto = new ArrayList<Integer>();
+        for (Trace trace: traceRoutes){
+             int qtd = 0;
+            for (Linha linha: trace.getLinhas()){
+                if (IP == linha.getP1().getIP() || IP == linha.getP2().getIP() || IP == linha.getP3().getIP()){
+                    qtd++;
+                }
+            }
+            qtdSalto.add(qtd);
+        }
+        return qtdSalto;
+    }
+    
+    
 
 }
