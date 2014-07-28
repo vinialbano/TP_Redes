@@ -54,7 +54,18 @@ public class Main {
     };
     
     int[] maioresSaltos (int saltos[], int tam){
-       return null;
+        int confere = 1, c = 0;
+        int maiores[] = new int [tam];
+        for (int i = 0; i<tam; i++){
+            maiores[c] = saltos[i];
+            if (maiores[c] != confere){
+                maiores[c] = saltos[i];
+            }else{
+                maiores[c] = 0;
+                c++;
+            }            
+        }
+       return maiores;
     };
     
     int[] estatisticaSalto (int ultimoSalto[], int tam){ //ultimoSalto recebe um vetor só com os ultimosSaltos pra comparar
