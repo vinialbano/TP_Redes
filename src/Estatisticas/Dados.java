@@ -164,12 +164,6 @@ public class Dados {
         return porc;
     }
 
-    public double porcentagemDescartesSalto(int numDescartes) {
-        double porc;
-        porc = (numDescartes / 3) * 100;
-        return porc;
-    }
-
     public double mediaAtraso(ArrayList<Double> pings) {
         double media, soma = 0;
         for (Double d : pings) {
@@ -232,32 +226,84 @@ public class Dados {
         return IPsSalto;
     }
 
-    public ArrayList<Integer> qtdSaltoIP(String IP) {
-        ArrayList<Integer> qtdSalto = new ArrayList<Integer>();
-        for (Trace trace : traceRoutes) {
-            int qtd = 0;
-            for (Linha linha : trace.getLinhas()) {
-                if (IP.compareTo(linha.getP1().getIP()) == 0 || IP.compareTo(linha.getP2().getIP()) == 0 || IP.compareTo(linha.getP3().getIP()) == 0) {
-                    qtd++;
-                }
-            }
-            qtdSalto.add(qtd);
-        }
-        return qtdSalto;
-    }
-
     public int qtdSaltoIPgeral(String IP) {
         int qtd = 0;
-        HashSet<Linha> linhasPassou = new HashSet<Linha>();
+        HashSet<Integer> linhasPassou = new HashSet<Integer>();
         for (Trace trace : traceRoutes) {
             for (Linha linha : trace.getLinhas()) {
-                if (!linhasPassou.contains(linha) && (IP.compareTo(linha.getP1().getIP()) == 0 || IP.compareTo(linha.getP2().getIP()) == 0 || IP.compareTo(linha.getP3().getIP()) == 0)) {
-                    qtd++;
-                    linhasPassou.add(linha);
+                if (!linhasPassou.contains(linha.getNumero())) {
+                    if (IP.compareTo(linha.getP1().getIP()) == 0 || IP.compareTo(linha.getP2().getIP()) == 0 || IP.compareTo(linha.getP3().getIP()) == 0) {
+                        qtd++;
+                        linhasPassou.add(linha.getNumero());
+                    }
                 }
             }
         }
         return qtd;
     }
+    
+    public ArrayList<Linha> getLinhasSalto(int Salto){
+        ArrayList<Linha> linhas = new ArrayList<Linha>();
+        for (Trace trace : traceRoutes) {
+            for (Linha linha : trace.getLinhas()) {
+                if (linha.getNumero()==Salto) {
+                    linhas.add(linha);
+                }
+            }
+        }
+        return linhas;
+    }
+    
+    public double porcPerdaSalto(int Salto){
+        int qtd = 0;
+        double porc;
+        ArrayList<Linha> linhas = getLinhasSalto(Salto);
+        for (Linha linha: linhas){
+            qtd+=linha.getDescartes();
+        }
+        porc = 100*(double)qtd/(linhas.size()*3);
+        return porc;
+    }
+    
+    public double mediaAtrasoSalto(int Salto){
+        double media, soma = 0;
+        ArrayList<Linha> linhas = getLinhasSalto(Salto);
+        for (Linha linha: linhas) {
+            soma += linha.getP1().getPing();
+            soma += linha.getP2().getPing();
+            soma += linha.getP3().getPing();
+        }
+        media = soma/(linhas.size()*3);
+        return media;
+    }
+    
+    public double variacaoAtrasoSalto(int Salto){
+        double var, maior = 0, menor = Double.POSITIVE_INFINITY;
+        ArrayList<Linha> linhas = getLinhasSalto(Salto);
+        for (Linha linha: linhas) {
+            if (linha.getP1().getPing()<menor){
+                menor=linha.getP1().getPing();
+            }
+            if (linha.getP2().getPing()<menor){
+                menor=linha.getP2().getPing();
+            }
+            if (linha.getP3().getPing()<menor){
+                menor=linha.getP3().getPing();
+            }
+            if (linha.getP1().getPing()>maior){
+                maior=linha.getP1().getPing();
+            }
+            if (linha.getP2().getPing()>maior){
+                maior=linha.getP2().getPing();
+            }
+            if (linha.getP3().getPing()>maior){
+                maior=linha.getP3().getPing();
+            }
+        }
+        var = maior-menor;
+        return var;
+    }
+    
+    
 
 }

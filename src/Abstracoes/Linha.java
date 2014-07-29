@@ -15,12 +15,14 @@ public class Linha {
 
     private Pacote p1, p2, p3;
     private int descartes;
+    private int numero;
 
-    public Linha() {
+    public Linha(int numero) {
         descartes = 0;
         p1 = null;
         p2 = null;
         p3 = null;
+        this.numero=numero;
     }
 
     /**
@@ -50,6 +52,8 @@ public class Linha {
     public int getDescartes() {
         return descartes;
     }
+    
+    
 
     /**
      * @param p1 the p1 to set
@@ -99,6 +103,13 @@ public class Linha {
         hash = 61 * hash + Objects.hashCode(this.p2);
         hash = 61 * hash + Objects.hashCode(this.p3);
         return hash;
+    }
+
+    /**
+     * @return the numero
+     */
+    public int getNumero() {
+        return numero;
     }
 
 }

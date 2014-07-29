@@ -4,12 +4,10 @@ package Abstracoes;
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author Vinicius
  */
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -30,30 +28,30 @@ public class Leitor {
     private static Trace trace = null;
     private static Pacote pacote;
     private static String txtIp, txtAst, txtPing, txtUltimoIp, txtSalto;
-    
-    private Leitor(){
+
+    private Leitor() {
     }
 
     private static void ler(String path) throws IOException {
         BufferedReader buffRead = new BufferedReader(new FileReader(path));
         String linha;
         traceRoutes = new ArrayList<Trace>();
-        trace=null;
+        trace = null;
         while (true) {
             linha = buffRead.readLine();
             if (linha != null) {
-                linhaTrace = new Linha();
                 padrao = Pattern.compile(inicioLinha);
                 localizador = padrao.matcher(linha);
                 if (localizador.find()) { //Encontrou o começo de linha válido
                     txtSalto = localizador.group(1);
-                    if (txtSalto.compareTo("1")==0){
-                        if (trace!=null){
+                    linhaTrace = new Linha(Integer.parseInt(txtSalto));
+                    if (txtSalto.compareTo("1") == 0) {
+                        if (trace != null) {
                             traceRoutes.add(trace);
                         }
                         trace = new Trace();
                     }
-                    
+
                     linha = linha.replaceFirst(inicioLinha, "");
 
                     for (int i = 0; i < 3; i++) {
@@ -103,8 +101,8 @@ public class Leitor {
         }
         buffRead.close();
     }
-    
-    public static ArrayList<Trace> getTraceRoutes(String path) throws IOException{
+
+    public static ArrayList<Trace> getTraceRoutes(String path) throws IOException {
         ler(path);
         return traceRoutes;
     }
